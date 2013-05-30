@@ -72,24 +72,24 @@ var langs =
         ['Lingua latīna', ['la']]
     ];
 
-for (var i = 0; i < langs.length; i++) {
-    select_language.options[i] = new Option(langs[i][0], i);
-}
-select_language.selectedIndex = 6;
-updateCountry();
-select_dialect.selectedIndex = 6;
+//for (var i = 0; i < langs.length; i++) {
+//    select_language.options[i] = new Option(langs[i][0], i);
+//}
+//select_language.selectedIndex = 6;
+//updateCountry();
+//select_dialect.selectedIndex = 6;
 showInfo('info_start');
-
-function updateCountry() {
-    for (var i = select_dialect.options.length - 1; i >= 0; i--) {
-        select_dialect.remove(i);
-    }
-    var list = langs[select_language.selectedIndex];
-    for (var i = 1; i < list.length; i++) {
-        select_dialect.options.add(new Option(list[i][1], list[i][0]));
-    }
-    select_dialect.style.visibility = list[1].length == 1 ? 'hidden' : 'visible';
-}
+//
+//function updateCountry() {
+//    for (var i = select_dialect.options.length - 1; i >= 0; i--) {
+//        select_dialect.remove(i);
+//    }
+//    var list = langs[select_language.selectedIndex];
+//    for (var i = 1; i < list.length; i++) {
+//        select_dialect.options.add(new Option(list[i][1], list[i][0]));
+//    }
+//    select_dialect.style.visibility = list[1].length == 1 ? 'hidden' : 'visible';
+//}
 
 var create_email = false;
 var final_transcript = '';
@@ -170,18 +170,35 @@ if (!('webkitSpeechRecognition' in window)) {
             showButtons('inline-block');
         }
         if(final_transcript){
-            console.log(final_transcript);
-            $("#poptext").speedoPopup(
+            console.log(linebreak(final_transcript));
+            $(this).speedoPopup(
                 {
                     effectIn: "incerto",        // The effectIn will be used as a fallback for older browsers.
                     effectOut: "slideZoom",     // The effectOut will be used as a fallback for older browsers.
                     css3Effects: "pageTop"
                 });
-            transit.search("人民广场", "中山公园");
+
+            resultvoice=linebreak(final_transcript);
+            $("#alertify-ok").click(function(){
+                console.log("dsadsa");
+                $(".speedo-ui-close").trigger("click");
+                start_point=resultvoice(0,resultvoice.indexOf("到"));
+                destination=resultvoice.substring(resultvoice.indexOf("到")+1,resultvoice.length);
+                transit.search(start_point, destination);
+            });
+            $("#alertify-cancel").click(function(){
+                $(".speedo-ui-close").trigger("click");
+            });
+
+
 
         }
     };
 }
+//
+
+
+
 
 function upgrade() {
     start_button.style.visibility = 'hidden';
@@ -240,7 +257,8 @@ function startButton(event) {
         return;
     }
     final_transcript = '';
-    recognition.lang = select_dialect.value;
+//    recognition.lang = select_dialect.value;
+    recognition.lang="cmn-Hans-CN";
     recognition.start();
     ignore_onend = false;
 //    final_span.innerHTML = '';
