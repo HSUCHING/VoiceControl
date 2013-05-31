@@ -20,14 +20,15 @@ local = new BMap.LocalSearch(map, {
 });
 
 
-$("#pop").click(function(){
-    $(this).speedoPopup(
-        {
-            effectIn: "incerto",        // The effectIn will be used as a fallback for older browsers.
-            effectOut: "slideZoom",     // The effectOut will be used as a fallback for older browsers.
-            css3Effects: "pageTop"
-        });
-});
+//popout.children()[1].children[0].innerHTML="hello";
+//$("#pop").click(function(){
+//    $(this).speedoPopup(
+//        {
+//            effectIn: "incerto",        // The effectIn will be used as a fallback for older browsers.
+//            effectOut: "slideZoom",     // The effectOut will be used as a fallback for older browsers.
+//            css3Effects: "pageTop"
+//        });
+//});
 
 
 

@@ -112,12 +112,12 @@ if (!('webkitSpeechRecognition' in window)) {
 
     recognition.onerror = function (event) {
         if (event.error == 'no-speech') {
-            start_img.src = 'img/mic.gif';
+            start_img.src = 'img/mic.png';
             showInfo('info_no_speech');
             ignore_onend = true;
         }
         if (event.error == 'audio-capture') {
-            start_img.src = 'img/mic.gif';
+            start_img.src = 'img/mic.png';
             showInfo('info_no_microphone');
             ignore_onend = true;
         }
@@ -136,7 +136,7 @@ if (!('webkitSpeechRecognition' in window)) {
         if (ignore_onend) {
             return;
         }
-        start_img.src = 'img/mic.gif';
+        start_img.src = 'img/mic.png';
         if (!final_transcript) {
             showInfo('info_start');
             return;
@@ -144,9 +144,9 @@ if (!('webkitSpeechRecognition' in window)) {
         showInfo('');
         if (window.getSelection) {
             window.getSelection().removeAllRanges();
-            var range = document.createRange();
-            range.selectNode(document.getElementById('final_span'));
-            window.getSelection().addRange(range);
+//            var range = document.createRange();
+//            range.selectNode(document.getElementById('final_span'));
+//            window.getSelection().addRange(range);
         }
         if (create_email) {
             create_email = false;
@@ -169,35 +169,33 @@ if (!('webkitSpeechRecognition' in window)) {
         if (final_transcript || interim_transcript) {
             showButtons('inline-block');
         }
-        if(final_transcript){
+        if (final_transcript) {
             console.log(linebreak(final_transcript));
+            $("#start_button").trigger("click");
             $(this).speedoPopup(
                 {
                     effectIn: "incerto",        // The effectIn will be used as a fallback for older browsers.
                     effectOut: "slideZoom",     // The effectOut will be used as a fallback for older browsers.
                     css3Effects: "pageTop"
                 });
+            popout.children()[1].children[0].innerHTML=linebreak(final_transcript);
+            resultvoice = linebreak(final_transcript);
 
-            resultvoice=linebreak(final_transcript);
-            $("#alertify-ok").click(function(){
-                console.log("dsadsa");
+            $("#alertify-ok").click(function () {
                 $(".speedo-ui-close").trigger("click");
-                start_point=resultvoice(0,resultvoice.indexOf("到"));
-                destination=resultvoice.substring(resultvoice.indexOf("到")+1,resultvoice.length);
+
+                start_point = resultvoice.substring(0, resultvoice.indexOf("到"));
+                destination = resultvoice.substring(resultvoice.indexOf("到") + 1, resultvoice.length);
                 transit.search(start_point, destination);
             });
-            $("#alertify-cancel").click(function(){
+            $("#alertify-cancel").click(function () {
                 $(".speedo-ui-close").trigger("click");
             });
-
-
 
         }
     };
 }
 //
-
-
 
 
 function upgrade() {
@@ -258,7 +256,7 @@ function startButton(event) {
     }
     final_transcript = '';
 //    recognition.lang = select_dialect.value;
-    recognition.lang="cmn-Hans-CN";
+    recognition.lang = "cmn-Hans-CN";
     recognition.start();
     ignore_onend = false;
 //    final_span.innerHTML = '';
@@ -288,8 +286,8 @@ function showButtons(style) {
         return;
     }
     current_style = style;
-    copy_button.style.display = style;
-    email_button.style.display = style;
+    copy_button.style.display = 'none';
+    email_button.style.display = 'none';
     copy_info.style.display = 'none';
     email_info.style.display = 'none';
 }
